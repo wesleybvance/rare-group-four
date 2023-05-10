@@ -105,4 +105,26 @@ def get_all_users():
 def get_single_user(id):
     """gets a single user by id
     """
-    pass # will complete later after merging Mark's branch
+    with sqlite3.connect("./db.sqlite3") as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+        db_cursor.execute("""
+        SELECT * FROM Users u
+        WHERE u.id = ?
+        """, ( id, ))
+
+        data = db_cursor.fetchone()
+        user = User(
+                data["id"],
+                data["first_name"],
+                data["last_name"],
+                data["email"],
+                data["bio"],
+                data["username"],
+                data["password"],
+                data["profile_image_url"],
+                data["created_on"],
+                data["active"]
+            )
+
+        return user.__dict__
