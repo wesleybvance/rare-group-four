@@ -68,11 +68,11 @@ class HandleRequests(BaseHTTPRequestHandler):
 
             if resource == "users":
                 if id is not None:
-                    pass
+                    response = get_single_user(id)
                 else:
                     response = get_all_users()
 
-        self.wfile.write(f"{response}".encode())
+        self.wfile.write(json.dumps(response).encode())
 
 
     def do_POST(self):
