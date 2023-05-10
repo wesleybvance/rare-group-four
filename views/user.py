@@ -100,3 +100,9 @@ def get_all_users():
             users.append(user.__dict__)
 
     return users
+
+
+def get_single_user(id):
+    """gets a single user by id
+    """
+    pass # will complete later after merging Mark's branch
