@@ -3,6 +3,7 @@ import json
 
 from views.user import create_user, login_user
 from views import get_all_users, get_single_user
+from views import get_all_categories, create_category, get_single_category
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -51,20 +52,27 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
-        """Handle Get requests to the server"""
+        """Handle GET requests to the server"""
         self._set_headers(200)
         response = {}
         parsed = self.parse_url()
 
         if '?' not in self.path:
             ( resource, id ) = parsed
+            if resource == "categories":
+                if id is not None:
+                    response = get_single_category(id)
+
+                else:
+                    response = get_all_categories()
+
             if resource == "users":
                 if id is not None:
                     pass
                 else:
                     response = get_all_users()
 
-        self.wfile.write(json.dumps(response).encode())
+        self.wfile.write(f"{response}".encode())
 
 
     def do_POST(self):
@@ -79,6 +87,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = login_user(post_body)
         if resource == 'register':
             response = create_user(post_body)
+        if resource == 'categories':
+            response = create_category(post_body)
 
         self.wfile.write(response.encode())
 
