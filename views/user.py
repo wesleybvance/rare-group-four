@@ -160,3 +160,13 @@ def update_user(id, new_user):
     if rows_affected == 0:
         return False
     return True
+
+
+def delete_user(id):
+    """deletes a user based off of id
+    """
+    with sqlite3.connect("./db.sqlite3") as conn:
+        db_cursor = conn.cursor()
+        db_cursor.execute("""
+        DELETE from Users WHERE id = ?
+        """, (id, ))
