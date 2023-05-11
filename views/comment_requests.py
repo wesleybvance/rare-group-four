@@ -49,3 +49,10 @@ def create_comment(new_comment):
         new_comment['id'] = id
 
     return new_comment
+
+def get_single_comment(id):
+  """_summary_
+
+  Args:
+      id (int)): id value for comment to return
+  """
