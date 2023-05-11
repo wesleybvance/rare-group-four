@@ -24,7 +24,7 @@ def get_all_categories():
 
             categories.append(category.__dict__)
 
-    return json.dumps(categories)
+    return categories
 
 
 def create_category(new_category):
@@ -42,7 +42,7 @@ def create_category(new_category):
         id = db_cursor.lastrowid
         new_category['id'] = id
 
-    return json.dumps(new_category)
+    return new_category
 
 
 def get_single_category(id):
@@ -63,4 +63,4 @@ def get_single_category(id):
 
         category = Category(data['id'], data['label'])
 
-    return json.dumps(category.__dict__)
+    return category.__dict__
