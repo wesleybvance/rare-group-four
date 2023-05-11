@@ -73,7 +73,6 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = get_all_users()
 
         self.wfile.write(json.dumps(response).encode())
-        # self.wfile.write(f"{response}".encode())
 
     def do_POST(self):
         """Make a post request to the server"""
