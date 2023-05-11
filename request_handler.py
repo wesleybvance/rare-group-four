@@ -3,7 +3,13 @@ import json
 
 from views.user import create_user, login_user
 from views import get_all_users, get_single_user, update_user, delete_user
-from views import get_all_categories, create_category, get_single_category
+from views import (
+    get_all_categories,
+    create_category,
+    get_single_category,
+    delete_category,
+    update_category
+)
 from views import create_comment, get_all_comments, get_single_comment, delete_comment
 from views import update_comment
 
@@ -87,7 +93,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         self._set_headers(201)
         content_len = int(self.headers.get('content-length', 0))
         post_body = json.loads(self.rfile.read(content_len))
-        response = ''
+        response = {}
         resource, _ = self.parse_url()
 
         if resource == 'login':
@@ -116,6 +122,9 @@ class HandleRequests(BaseHTTPRequestHandler):
         if resource == "comments":
             success = update_comment(id, post_body)
 
+        if resource == "categories":
+            success = update_category(id, post_body)
+
         if success:
             self._set_headers(204)
         else:
@@ -132,6 +141,9 @@ class HandleRequests(BaseHTTPRequestHandler):
             delete_user(id)
         if resource == "comments":
             delete_comment(id)
+            
+        if resource == "categories":
+            delete_category(id)
 
         self.wfile.write("".encode())
 
