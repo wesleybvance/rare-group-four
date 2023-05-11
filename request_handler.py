@@ -2,7 +2,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 
 from views.user import create_user, login_user
-from views import get_all_users, get_single_user
+from views import get_all_users, get_single_user, update_user
 from views import get_all_categories, create_category, get_single_category
 
 
@@ -73,7 +73,7 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = get_all_users()
 
         self.wfile.write(json.dumps(response).encode())
-
+        # self.wfile.write(f"{response}".encode())
 
     def do_POST(self):
         """Make a post request to the server"""
@@ -94,7 +94,21 @@ class HandleRequests(BaseHTTPRequestHandler):
 
     def do_PUT(self):
         """Handles PUT requests to the server"""
-        pass
+        content_len = int(self.headers.get('content-length', 0))
+        post_body = self.rfile.read(content_len)
+        post_body = json.loads(post_body)
+        (resource, id) = self.parse_url()
+        success = False
+
+        if resource == "users":
+            success = update_user(id, post_body)
+
+        if success:
+            self._set_headers(204)
+        else:
+            self._set_headers(404)
+
+        self.wfile.write("".encode())
 
     def do_DELETE(self):
         """Handle DELETE Requests"""

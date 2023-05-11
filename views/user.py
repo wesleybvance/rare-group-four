@@ -10,7 +10,8 @@ def login_user(user):
         user (dict): Contains the username and password of the user trying to login
 
     Returns:
-        json string: If the user was found will return valid boolean of True and the user's id as the token
+        json string: If the user was found will return valid boolean of True
+                    and the user's id as the token
                      If the user was not found will return valid boolean False
     """
     with sqlite3.connect('./db.sqlite3') as conn:
@@ -128,3 +129,34 @@ def get_single_user(id):
             )
 
         return user.__dict__
+
+
+def update_user(id, new_user):
+    """updates a user based off of the user id
+
+    Args:
+        id (integer): user.id
+        new_user (object): new user information to update
+    """
+    with sqlite3.connect("./db.sqlite3") as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+        db_cursor.execute("""
+        UPDATE Users
+            SET
+                first_name = ?,
+                last_name = ?,
+                email = ?,
+                bio = ?,
+                username = ?,
+                password = ?,
+                profile_image_url = ?
+        WHERE id = ?
+        """, (new_user["first_name"], new_user["last_name"], new_user["email"],
+              new_user["bio"], new_user["username"], new_user["password"],
+              new_user["profile_image_url"], id, ))
+
+        rows_affected = db_cursor.rowcount
+    if rows_affected == 0:
+        return False
+    return True
