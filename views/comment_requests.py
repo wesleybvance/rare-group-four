@@ -6,7 +6,7 @@ def get_comments_by_post(post_id):
     """METHOD FOR GETTING COMMENTS
     BY POST ID"""
 
-    with sqlite3.connect("./kennel.sqlite3") as conn:
+    with sqlite3.connect("./db.sqlite3") as conn:
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
 
@@ -18,7 +18,7 @@ def get_comments_by_post(post_id):
             c.author_id,
             c.post_id,
             c.content
-        from Comment c
+        from Comments c
         WHERE c.post_id = ?
         """, (post_id, ))
 
@@ -31,3 +31,21 @@ def get_comments_by_post(post_id):
             comments.append(comment.__dict__)
 
     return comments
+
+def create_comment(new_comment):
+    with sqlite3.connect("./db.sqlite3") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        INSERT INTO Comments
+            ( author_id, post_id, content )
+        VALUES
+            ( ?, ?, ?);
+        """, (new_comment['author_id'], new_comment['post_id'],
+              new_comment['content'] ))
+
+        id = db_cursor.lastrowid
+
+        new_comment['id'] = id
+
+    return new_comment
