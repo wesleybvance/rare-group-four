@@ -3,7 +3,9 @@ import json
 
 from views.user import create_user, login_user
 from views import get_all_users, get_single_user, update_user, delete_user
-from views import get_all_categories, create_category, get_single_category, create_comment
+from views import get_all_categories, create_category, get_single_category
+from views import create_comment, get_all_comments, get_single_comment, delete_comment
+from views import update_comment
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -72,6 +74,12 @@ class HandleRequests(BaseHTTPRequestHandler):
                 else:
                     response = get_all_users()
 
+            if resource == "comments":
+                if id is not None:
+                    response = get_single_comment(id)
+                else:
+                    response = get_all_comments()
+
         self.wfile.write(json.dumps(response).encode())
 
     def do_POST(self):
@@ -90,7 +98,7 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = create_category(post_body)
         if resource == 'comments':
             response = create_comment(post_body)
-        
+
         # self.wfile.write(f"{response}".encode())
         # self.wfile.write(response.encode())
         self.wfile.write(json.dumps(response).encode())
@@ -105,6 +113,8 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "users":
             success = update_user(id, post_body)
+        if resource == "comments":
+            success = update_comment(id, post_body)
 
         if success:
             self._set_headers(204)
@@ -120,6 +130,8 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "users":
             delete_user(id)
+        if resource == "comments":
+            delete_comment(id)
 
         self.wfile.write("".encode())
 
