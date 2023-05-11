@@ -3,7 +3,13 @@ import json
 
 from views.user import create_user, login_user
 from views import get_all_users, get_single_user, update_user, delete_user
-from views import get_all_categories, create_category, get_single_category
+from views import (
+    get_all_categories,
+    create_category,
+    get_single_category,
+    delete_category,
+    update_category
+)
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -101,6 +107,9 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "users":
             success = update_user(id, post_body)
+            
+        if resource == "categories":
+            success = update_category(id, post_body)
 
         if success:
             self._set_headers(204)
@@ -116,6 +125,9 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "users":
             delete_user(id)
+            
+        if resource == "categories":
+            delete_category(id)
 
         self.wfile.write("".encode())
 

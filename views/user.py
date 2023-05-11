@@ -3,6 +3,7 @@ import json
 from datetime import datetime
 from models import User
 
+
 def login_user(user):
     """Checks for the user in the database
 
@@ -98,7 +99,8 @@ def get_all_users():
                 row["created_on"],
                 row["active"]
             )
-            users.append(user.__dict__)
+
+            users.append(user.serialized())
 
     return users
 
@@ -112,23 +114,23 @@ def get_single_user(id):
         db_cursor.execute("""
         SELECT * FROM Users u
         WHERE u.id = ?
-        """, ( id, ))
+        """, (id, ))
 
         data = db_cursor.fetchone()
         user = User(
-                data["id"],
-                data["first_name"],
-                data["last_name"],
-                data["email"],
-                data["bio"],
-                data["username"],
-                data["password"],
-                data["profile_image_url"],
-                data["created_on"],
-                data["active"]
-            )
+            data["id"],
+            data["first_name"],
+            data["last_name"],
+            data["email"],
+            data["bio"],
+            data["username"],
+            data["password"],
+            data["profile_image_url"],
+            data["created_on"],
+            data["active"]
+        )
 
-        return user.__dict__
+        return user.serialized()
 
 
 def update_user(id, new_user):
