@@ -91,5 +91,37 @@ INSERT INTO Reactions ('label', 'image_url') VALUES ('happy', 'https://pngtree.c
 
 INSERT INTO Categories ('label') VALUES ('Movies')
 
+INSERT INTO Categories (label) VALUES ('News');
+INSERT INTO Categories (label) VALUES ('Movies');
+INSERT INTO Categories (label) VALUES ('Sports');
+INSERT INTO Categories (label) VALUES ('Music');
+INSERT INTO Categories (label) VALUES ('Technology');
+
+
 SELECT * 
 FROM Categories
+
+INSERT INTO "Posts" ("user_id", "category_id", "title", "publication_date", "image_url", "content", "approved")
+VALUES (1, 2, "My First Post", "2023-05-12", "https://example.com/image1.jpg", "This is my first post!", 1);
+
+INSERT INTO "Posts" ("user_id", "category_id", "title", "publication_date", "image_url", "content", "approved")
+VALUES (2, 3, "Another Post", "2023-05-11", "https://example.com/image2.jpg", "Here's another post for you to enjoy.", 0);
+
+INSERT INTO "Posts" ("user_id", "category_id", "title", "publication_date", "image_url", "content", "approved")
+VALUES (3, 1, "A Third Post", "2023-05-10", "https://example.com/image3.jpg", "This is the third post on my blog.", 1);
+
+INSERT INTO "Posts" ("user_id", "category_id", "title", "publication_date", "image_url", "content", "approved")
+VALUES (2, 2, "My Favorite Things", "2023-05-09", "https://example.com/image4.jpg", "These are a few of my favorite things.", 1);
+
+
+INSERT INTO Users (first_name, last_name, email, bio, username, password, profile_image_url, created_on, active)
+VALUES ('John', 'Doe', 'john.doe@email.com', 'I am a software engineer', 'johndoe', 'password123', 'https://example.com/profile.jpg', '2023-05-11', 1);
+
+INSERT INTO Users (first_name, last_name, email, bio, username, password, profile_image_url, created_on, active)
+VALUES ('Jane', 'Doe', 'jane.doe@email.com', 'I am a web developer', 'janedoe', 'password456', 'https://example.com/profile.jpg', '2023-05-11', 1);
+
+INSERT INTO Users (first_name, last_name, email, bio, username, password, profile_image_url, created_on, active)
+VALUES ('Alice', 'Smith', 'alice.smith@email.com', 'I am a graphic designer', 'alicesmith', 'password789', 'https://example.com/profile.jpg', '2023-05-11', 1);
+
+INSERT INTO Users (first_name, last_name, email, bio, username, password, profile_image_url, created_on, active)
+VALUES ('Bob', 'Johnson', 'bob.johnson@email.com', 'I am a data analyst', 'bobjohnson', 'password101112', 'https://example.com/profile.jpg', '2023-05-11', 1);

@@ -3,6 +3,7 @@ import json
 
 from views.user import create_user, login_user
 from views import get_all_users, get_single_user, update_user, delete_user
+from views import get_all_posts, get_single_post, update_post, delete_post, create_post
 from views import (
     get_all_categories,
     create_category,
@@ -12,7 +13,6 @@ from views import (
 )
 from views import create_comment, get_all_comments, get_single_comment, delete_comment
 from views import update_comment
-
 
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
@@ -79,6 +79,12 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = get_single_user(id)
                 else:
                     response = get_all_users()
+                    
+            if resource == "posts":
+                if id is not None:
+                    response = get_single_post(id)
+                else:
+                    response = get_all_posts()
 
             if resource == "comments":
                 if id is not None:
@@ -102,6 +108,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = create_user(post_body)
         if resource == 'categories':
             response = create_category(post_body)
+        if resource == 'posts':
+            response = create_post(post_body)
         if resource == 'comments':
             response = create_comment(post_body)
 
@@ -119,6 +127,10 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "users":
             success = update_user(id, post_body)
+
+        if resource == "posts":
+            success = update_post(id, post_body)
+            
         if resource == "comments":
             success = update_comment(id, post_body)
 
@@ -139,6 +151,10 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "users":
             delete_user(id)
+
+        if resource == "posts":
+            delete_post(id)
+            
         if resource == "comments":
             delete_comment(id)
 
