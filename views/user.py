@@ -1,6 +1,6 @@
 import sqlite3
 import json
-from datetime import datetime
+from datetime import date
 from models import User
 
 
@@ -63,7 +63,7 @@ def create_user(user):
             user['email'],
             user['password'],
             user['bio'],
-            datetime.now()
+            date.today()
         ))
 
         id = db_cursor.lastrowid
@@ -172,3 +172,38 @@ def delete_user(id):
         db_cursor.execute("""
         DELETE from Users WHERE id = ?
         """, (id, ))
+
+
+def get_user_by_email(email):
+    """get a user(s) by email address
+
+    Args:
+        email (str): email address
+    """
+    with sqlite3.connect("./db.sqlite3") as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+        db_cursor.execute("""
+        SELECT * from users
+        WHERE LOWER ( email ) LIKE ?
+        """, (email, ))
+
+        users = []
+        dataset = db_cursor.fetchall()
+
+        for row in dataset:
+            user = User(
+                row["id"],
+                row["first_name"],
+                row["last_name"],
+                row["email"],
+                row["bio"],
+                row["username"],
+                row["password"],
+                row["profile_image_url"],
+                row["created_on"],
+                row["active"]
+            )
+            users.append(user.__dict__)
+
+    return users

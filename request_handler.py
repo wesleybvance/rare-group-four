@@ -3,7 +3,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 
 from views.user import create_user, login_user
-from views import get_all_users, get_single_user, update_user, delete_user
+from views import get_all_users, get_single_user, update_user, delete_user, get_user_by_email
 from views import (
     get_all_posts,
     get_single_post,
@@ -104,6 +104,9 @@ class HandleRequests(BaseHTTPRequestHandler):
 
             if query.get('category_id') and resource == 'posts':
                 response = get_post_by_category(query['category_id'][0])
+
+            if query.get('email') and resource == 'users':
+                response = get_user_by_email(query['email'][0])
 
         self.wfile.write(json.dumps(response).encode())
 
