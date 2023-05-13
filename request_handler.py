@@ -141,7 +141,7 @@ class HandleRequests(BaseHTTPRequestHandler):
             delete_user(id)
         if resource == "comments":
             delete_comment(id)
-            
+
         if resource == "categories":
             delete_category(id)
 
