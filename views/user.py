@@ -183,5 +183,6 @@ def get_user_by_email(email):
     with sqlite3.connect("./db.sqlite3") as conn:
         db_cursor = conn.cursor()
         db_cursor.execute("""
-        
-        """)
+        SELECT * from users
+        WHERE email = ?
+        """, (email, ))
