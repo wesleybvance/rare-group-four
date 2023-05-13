@@ -11,6 +11,8 @@ from views import (
     delete_category,
     update_category
 )
+from views import create_comment, get_all_comments, get_single_comment, delete_comment
+from views import update_comment
 
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
@@ -77,12 +79,18 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = get_single_user(id)
                 else:
                     response = get_all_users()
-                    
+
             if resource == "posts":
                 if id is not None:
                     response = get_single_post(id)
                 else:
                     response = get_all_posts()
+
+            if resource == "comments":
+                if id is not None:
+                    response = get_single_comment(id)
+                else:
+                    response = get_all_comments()
 
         self.wfile.write(json.dumps(response).encode())
 
@@ -102,8 +110,12 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = create_category(post_body)
         if resource == 'posts':
             response = create_post(post_body)
+        if resource == 'comments':
+            response = create_comment(post_body)
 
-        self.wfile.write(response.encode())
+        # self.wfile.write(f"{response}".encode())
+        # self.wfile.write(response.encode())
+        self.wfile.write(json.dumps(response).encode())
 
     def do_PUT(self):
         """Handles PUT requests to the server"""
@@ -118,7 +130,10 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "posts":
             success = update_post(id, post_body)
-            
+
+        if resource == "comments":
+            success = update_comment(id, post_body)
+
         if resource == "categories":
             success = update_category(id, post_body)
 
@@ -139,7 +154,10 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "posts":
             delete_post(id)
-            
+
+        if resource == "comments":
+            delete_comment(id)
+
         if resource == "categories":
             delete_category(id)
 
