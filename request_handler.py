@@ -79,7 +79,7 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = get_single_user(id)
                 else:
                     response = get_all_users()
-                    
+
             if resource == "posts":
                 if id is not None:
                     response = get_single_post(id)
@@ -130,7 +130,7 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "posts":
             success = update_post(id, post_body)
-            
+
         if resource == "comments":
             success = update_comment(id, post_body)
 
@@ -154,7 +154,7 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "posts":
             delete_post(id)
-            
+
         if resource == "comments":
             delete_comment(id)
 
