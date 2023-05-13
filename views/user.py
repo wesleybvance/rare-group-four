@@ -181,8 +181,29 @@ def get_user_by_email(email):
         email (str): email address
     """
     with sqlite3.connect("./db.sqlite3") as conn:
+        conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
         db_cursor.execute("""
         SELECT * from users
         WHERE email = ?
         """, (email, ))
+
+        users = []
+        dataset = db_cursor.fetchall()
+
+        for row in dataset:
+            user = User(
+                row["id"],
+                row["first_name"],
+                row["last_name"],
+                row["email"],
+                row["bio"],
+                row["username"],
+                row["password"],
+                row["profile_image_url"],
+                row["created_on"],
+                row["active"]
+            )
+            users.append(user.__dict__)
+
+    return users
