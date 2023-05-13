@@ -1,4 +1,10 @@
-from .user import get_all_users, get_single_user, update_user, delete_user
+from .user import (
+    get_all_users,
+    get_single_user,
+    update_user,
+    delete_user,
+    get_user_by_email
+)
 from .post_requests import get_all_posts,get_single_post,update_post,delete_post, create_post, get_post_by_category
 from .category_requests import (
     get_all_categories,

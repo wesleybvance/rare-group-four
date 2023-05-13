@@ -185,7 +185,7 @@ def get_user_by_email(email):
         db_cursor = conn.cursor()
         db_cursor.execute("""
         SELECT * from users
-        WHERE email = ?
+        WHERE LOWER ( email ) LIKE ?
         """, (email, ))
 
         users = []
