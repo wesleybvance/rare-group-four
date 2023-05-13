@@ -3,6 +3,7 @@ import json
 
 from views.user import create_user, login_user
 from views import get_all_users, get_single_user, update_user, delete_user
+from views import get_all_posts, get_single_post, update_post, delete_post, create_post
 from views import (
     get_all_categories,
     create_category,
@@ -10,7 +11,6 @@ from views import (
     delete_category,
     update_category
 )
-
 
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
@@ -77,6 +77,12 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = get_single_user(id)
                 else:
                     response = get_all_users()
+                    
+            if resource == "posts":
+                if id is not None:
+                    response = get_single_post(id)
+                else:
+                    response = get_all_posts()
 
         self.wfile.write(json.dumps(response).encode())
 
@@ -94,6 +100,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = create_user(post_body)
         if resource == 'categories':
             response = create_category(post_body)
+        if resource == 'posts':
+            response = create_post(post_body)
 
         self.wfile.write(response.encode())
 
@@ -107,6 +115,9 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "users":
             success = update_user(id, post_body)
+
+        if resource == "posts":
+            success = update_post(id, post_body)
             
         if resource == "categories":
             success = update_category(id, post_body)
@@ -125,6 +136,9 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "users":
             delete_user(id)
+
+        if resource == "posts":
+            delete_post(id)
             
         if resource == "categories":
             delete_category(id)
