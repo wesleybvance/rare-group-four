@@ -18,7 +18,9 @@ class User():
 
     def serialized(self):
         """Does not return id, password, or active"""
-        return {"first_name": self.first_name,
+        return {
+                "id": self.id,
+                "first_name": self.first_name,
                 "last_name": self.last_name,
                 "email": self.email,
                 "bio": self.bio,
