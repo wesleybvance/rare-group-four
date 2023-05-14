@@ -3,7 +3,13 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 
 from views.user import create_user, login_user
-from views import get_all_users, get_single_user, update_user, delete_user, get_user_by_email
+from views import (
+    get_all_users,
+    get_single_user,
+    update_user,
+    delete_user,
+    get_user_by_email
+)
 from views import (
     get_all_posts,
     get_single_post,
@@ -19,8 +25,15 @@ from views import (
     delete_category,
     update_category
 )
-from views import create_comment, get_all_comments, get_single_comment, delete_comment
-from views import update_comment
+from views import (
+    create_comment,
+    get_all_comments,
+    get_single_comment,
+    delete_comment,
+    update_comment,
+    get_comments_by_post,
+    get_comments_by_author
+)
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -107,6 +120,12 @@ class HandleRequests(BaseHTTPRequestHandler):
 
             if query.get('email') and resource == 'users':
                 response = get_user_by_email(query['email'][0])
+
+            if query.get('post_id') and resource == 'comments':
+                response = get_comments_by_post(query['post_id'][0])
+
+            if query.get('author_id') and resource == 'comments':
+                response = get_comments_by_author(query['author_id'][0])
 
         self.wfile.write(json.dumps(response).encode())
 
