@@ -32,6 +32,7 @@ def get_comments_by_post(post_id):
 
     return comments
 
+
 def create_comment(new_comment):
     """Create Comment"""
     with sqlite3.connect("./db.sqlite3") as conn:
@@ -137,3 +138,33 @@ def update_comment(id, new_comment):
         return False
     else:
         return True
+
+def get_comments_by_author(author_id):
+    """METHOD FOR GETTING COMMENTS
+    BY AUTHOR ID"""
+
+    with sqlite3.connect("./db.sqlite3") as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+        #SQL Query to database - select
+        # comment data by author_id filter
+        db_cursor.execute("""
+        select
+            c.id,
+            c.author_id,
+            c.post_id,
+            c.content
+        from Comments c
+        WHERE c.author_id = ?
+        """, (author_id, ))
+
+        comments = []
+        dataset = db_cursor.fetchall()
+
+        for row in dataset:
+            comment = Comment(row['id'], row['author_id'], row['post_id'],
+                              row['content'])
+            comments.append(comment.__dict__)
+
+    return comments
